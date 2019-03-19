@@ -3,83 +3,82 @@
 =indexes Markdown, GitHub, JavaScript, jQuery
 =status show
 =author szabgab
+=translator nselem
 =archive 1
 =comments_disqus_enable 1
 
 =abstract start
 
-If you have just <a href="/getting-started-with-github-pages">started with GitHub pages</a> you might be wondering how can you serve dynamic content. Well, you cannot really as the pages are static.
-However this should not stop you from writing in JavaScript and ending up with a <b>Single Page Application</b>.
+Si estás <a href="/getting-started-with-github-pages">empezando con GitHub pages</a> seguro te estás preguntando cómo puedes servir contenido dinámico. Bien, realmente no puedes porque las páginas son estáticas.
+Sin embargo, esto no debe detenerte de programar en JavaScript y terminar con una <b>Single Page Application</b> (Aplicación de una sola página).
 
-The first step in that direction is to see how to add JavaScript and jQuery to the pages.
+El primer paso en esta dirección es ver cómo agregar JavaScript y jQuery a las páginas.
 
 =abstract end
 
-Actually, after we went through some experimental steps it is quite straight forward. After all we can embed any HTML in our Markdown files so we can also embed <b>script</b>
-tags. If this is enough for you, you can now go ahead and start adding JavaScript code to your pages.
+De hecho, después de algunos pasos experimentales es muy simple. Después de todo podemos embeber HTML en nuestros archivos Markdown así que podemos embeber etiquetas de <b>script</b>. Si esto es suficiente para ti, ya puedes empezar a agregar código de JavaScript a tus páginas.
 
 
 <h2>Step-by-step guide</h2>
 
-If you are less of a JavaScript maven, then you might want to follow use step-by-step.
+Si vas comenzando con JavaScript, quizá quieras seguir este tutorial paso a paso.
 
 <h3>Embedded JavaScript</h3>
 
-In the first example we create a Markdown file called <hl>js.md</hl> In that Markdown file we put an HTML <hl>div</hl> element with an id "text".
-Later in that file we add a <hl>script</hl> tag and inside we write some simple JavaScript code. This code will locate the element that has the id "text", or <hl>div</hl>
-element, and inside the element it will put the text that appears on the right-hand side of the assignment.
+En el primer ejemplo creamos un archivo Markdown llamado <hl>js.md</hl> En ese archivo Markdown pusimos un elemento de HTML <hl>div</hl> con un identificador "text".
+Más tarde en ese archivo agregamos una etiqueta de <hl>script</hl> y dentro de ella escribimos un código simple de JavaScript. Este código localizará el elemento que tiene el identificador "text", o <hl>div</hl>, y dentro de este elemento pondrá el texto que aparece en el lado derecho de la asignación.
 
-The main thing you need to remember here is that the JavaScript code must come at the end so by the time it is executed the DOM is ready. Otherwise the JavaScript code will not find the HTML element.
+Lo principal que necesitas recordar aquí es que el código de JavaScript debe venir al final, asi que para cuando es ejecutado el DOM está listo. De otra manera el código de JavaScript no encontrará el elemento HTML.
 
 <include file="examples/github/js.md">
 
 <h3>jQuery loaded from external file</h3>
 
-Our next step is to use <a href="http://jquery.com/">jQuery</a> instead of vanilla JavaScript.
-For this we only need to load jQuery from its CDN.
-If we are already loading an external JavaScript file, I though we can also move our code to an external file.
-So I created the <hl>demo.js</hl> file loaded it using another <hl>script</hl> tag.
+Nuestro siguiente paso es usar <a href="http://jquery.com/">jQuery</a> en lugar de vanilla JavaScript.
+Para ello solo necesitamos cargar jQuery desde su CDN.
+Si ya estamos cargando un archivo externo de JavaScript, creo que también podramos mover nuestro código a un archivo externo.
+Así que hemos creado el archivo <hl>demo.js</hl> cargándolo usando otra etiqueta <hl>script</hl>.
 
-This time we can put the <hl>script</hl> tags anywhere we like as the jQuery callback function will be only executed when the DOM is ready.
-The only limitation is that we need to load our code <b>after</b> we have loaded jQuery itself.
+Esta vez podemos poner la etiqueta <hl>script</hl> donde queramos ya que la funcion llamada de jQuery sólo será ejecutada cuando el DOM esté listo.
+La punica limitación es que necesitamos cargar nuestro código <b>después</b> de que hayamos cargado jQuery.
 
 <include file="examples/github/jquery.md">
 
-In our jQuery code we have an anonymous callback function that will be called when the HTML was loaded and the DOM is ready. That's what <hl>$().ready</hl> does.
-Inside the function we use the <hl>$("#text")</hl> expression to locate the element with id "text" and then we use the <hl>html</hl> method to set the content of the element.
-(It is the same as innerHTML in vanilla JavaScript.)
+En nuestro código jQuery tenemos una función "llamada" que será ejecutada cuando el HTML esté cargado y el DOM esté listo. Esto es que está <hl>$().ready</hl>.
+Dentro de la función usamos la <hl>$("#text")</hl> expresion para localizar el elemento con el identificador "text" y entonces usamos el método <hl>html</hl> para poner el contenido del elemento.
+(Es lo mismo que innerHTML en vanilla JavaScript.)
 
 <include file="examples/github/demo.js">
 
-<h3>Loading JSON data from server</h3>
+<h3>Cargando datos JSON desde el servidor</h3>
 
-Finally, we would like to get some data from the server. As we cannot run anything on the server we cannot get dynamic data,
-but we can store the data in JSON files and load them using the Ajax methods provided by jQuery.
+Finalmente, podemos cargar algunos datos desde el servidor. Como no podemos correr cualquier cosa desde el servidor no podemos obtener datos dinámicos,
+pero podemos guardar datos en archivos JSON y cargarlos usando los métodos Ajax provistos por jQuery.
 
-In this example the Markup file is effectively the same as in our previous examples.
+En este ejemplo el archivo Markup es efectivmente el mismo que en los ejemplos anteriores.
 
 <include file="examples/github/json.md">
 
-In the jQuery code we use the <hl>getJSON</hl> method to fetch the <hl>data.json</hl> file from the server.
-This means, first the HTML file that was generated from the Markdown file will be loaded. Then the browser will load jQuery followed by our code.
-Then, once everything is ready, our code runs and loads the JSON file from the server.
+En el código jQuery usamos el método <hl>getJSON</hl> para cargar el archivo <hl>data.json</hl> desde el servidor.
+Esto significa, que primero el archivo HTML fue generado a partir del archivo Markdown será cargado. Entonces el navegador cargará jQuery seguido de nuestro código.
+Entonces, una vez que todo esta listo, nuestro código corre y carga el archivo JSON desde el servidor.
 
-The first parameter of <hl>getJSON</hl> is the URL of the JSON file we would like to load. The second parameter is an anonymous callback function that will be executed when we get the response from the server. Then the jQuery will call our anonymous function and it will pass the content of the JSON file after it was converted to a JavaScript object.
+El primer parámetro de <hl>getJSON</hl> es la URL de el archivo JSON que queremos cargar. El segundo parámetro es una función anónima que puede ser ejecutada cuando obtenemos la respuesta desde el servidor. Entonces el jQuery llamará nuestra función anónima y pasará el contenido del archivo JSON después de ser convertido a un objeto de JavaScript.
 
-<hl>console.log(data);</hl> was only added for debugging.
+<hl>console.log(data);</hl> solo fue agregado para depuración.
 
-In the last JQuery code, in <hl>$("#text").html(data["text"]);</hl> the first part <hl>$("#text")</hl> will locate the element with the id "text".
-The <hl>html</hl> method will set the content of the element to the value we pass to it which in our case is <hl>data["text"]</hl>, the value of the "text" key that arrived from the JSON file.
+En el último código JQuery, en <hl>$("#text").html(data["text"]);</hl> la primera parte <hl>$("#text")</hl> localizará el elemento  "text".
+El método <hl>html</hl> enviará el contenido del elemento al valor que nosotros le asamos, que en este caso es <hl>data["text"]</hl>, el valor de la llave "text" viene desde el archivo JSON.
 
 <include file="examples/github/json.js">
 
-This is the <hl>data.json</hl>
+Este es el <hl>data.json</hl>
 
 <include file="examples/github/data.json">
 
-<h2>Conclusion</h2>
+<h2>Conclusión</h2>
 
-Once you tried it and made it work, it seems to be quite straight forward to embed or include JavaScript and jQuery code.
-We now need to turn to more complex tasks.
+Una vez que lo intentes y lo consigas, parece muy directo embeber o incluir código de JavaScript y jQuery.
+Ahora necesitamos dedicarnos a tareas más complejas.
 
 
